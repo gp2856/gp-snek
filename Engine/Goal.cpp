@@ -1,7 +1,8 @@
 #include "Goal.h"
 
-Goal::Goal(std::mt19937 & rng, const Board & brd, const Snake & snek)
+Goal::Goal(std::mt19937 & rng, const Board & brd, const Snake & snek, Color in_c)
 {
+	c = in_c;
 	Respawn(rng, brd, snek);
 }
 

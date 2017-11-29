@@ -29,7 +29,7 @@ Game::Game( MainWindow& wnd )
 	board(gfx),
 	snek({ 1, 1 }),
 	rng(std::random_device()()),
-	goal(rng, board, snek)
+	goal(rng, board, snek, Colors::Blue)
 {
 }
 
