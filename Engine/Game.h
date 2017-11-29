@@ -50,10 +50,12 @@ private:
 	/*  User Variables              */
 
 	std::mt19937 rng;
+	int nStartPoison = 5;
 	// Game Objects //
 	Board board;
 	Snake snek;
 	Goal goal;
+	std::vector<Goal> poison;
 	
 	// Timers and Counters //
 	FrameTimer ft;

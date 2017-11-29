@@ -31,6 +31,10 @@ Game::Game( MainWindow& wnd )
 	rng(std::random_device()()),
 	goal(rng, board, snek, Colors::Blue)
 {
+	for (int i = 0; i <= nStartPoison; i++)
+	{
+		poison.push_back(Goal(rng, board, snek, Colors::Red));
+	}
 }
 
 void Game::Go()
@@ -78,10 +82,7 @@ void Game::UpdateModel()
 				const float dt = ft.Mark();
 				Location next = snek.GetNextHeadLocation(delta_loc);
 
-				/*if (next == goal.GetLocation())
-				{
-					snek.GrowAndMoveBy(delta_loc);
-				}*/
+				
 				if (!board.IsInsideBoard(snek.GetNextHeadLocation(delta_loc)) ||
 					snek.IsInTileExceptEnd(next))
 				{
@@ -130,6 +131,10 @@ void Game::ComposeFrame()
 	{
 		snek.Draw(board);
 		goal.Draw(board);
+		for (auto& p : poison)
+		{
+			p.Draw(board);
+		}
 		if (GameIsOver)
 		{
 			SpriteCodex::DrawGameOver((Graphics::ScreenWidth / 2) - (83 / 2), (Graphics::ScreenHeight / 2) - (63 / 2), gfx);
