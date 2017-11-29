@@ -98,7 +98,14 @@ void Game::UpdateModel()
 							goal.Respawn(rng, board, snek);
 						}
 					}
-					snek.MoveBy(delta_loc);
+					if (board.IsInsideBoard(snek.GetNextHeadLocation(delta_loc)))
+					{
+						snek.MoveBy(delta_loc);
+					}
+					else
+					{
+						GameIsOver = true;
+					}
 
 				}
 			}	
