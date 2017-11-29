@@ -27,6 +27,7 @@
 #include "Location.h"
 #include "Snake.h"
 #include "Goal.h"
+#include "FrameTimer.h"
 #include <random>
 
 class Game
@@ -55,11 +56,12 @@ private:
 	Goal goal;
 	
 	// Timers and Counters //
+	FrameTimer ft;
 	static constexpr int snekMovePeriodMin = 4;
-	int snekMovePeriod = 20;
-	int snekMoveCounter = 0;
-	int snekSpeedupPeriod = 120;
-	int snekSpeedupCounter = 0;
+	float snekMovePeriod = 0.75f;
+	float snekMoveCounter = 0.0f;
+	float snekSpeedupPeriod = 10.0f;
+	float snekSpeedupCounter = 0.0;
 
 	// Flags //
 	bool suppressGrowth = false;

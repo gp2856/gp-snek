@@ -43,6 +43,7 @@ void Game::Go()
 
 void Game::UpdateModel()
 {
+	const float dt = ft.Mark();
 	if (wnd.kbd.KeyIsPressed(VK_RETURN))
 	{
 		GameIsStarted = true;
@@ -69,11 +70,12 @@ void Game::UpdateModel()
 			}
 
 
-			snekMoveCounter++;
 
-			if (snekMoveCounter == snekMovePeriod)
+			snekMoveCounter += dt;
+			if (snekMoveCounter >= snekMovePeriod)
 			{
 				snekMoveCounter = 0;
+				const float dt = ft.Mark();
 				Location next = snek.GetNextHeadLocation(delta_loc);
 
 				/*if (next == goal.GetLocation())
@@ -94,15 +96,19 @@ void Game::UpdateModel()
 						if (eating)
 						{
 							goal.Respawn(rng, board, snek);
-							snekMovePeriod = std::max(snekMovePeriod - 1, snekMovePeriodMin);
 						}
 					}
 					snek.MoveBy(delta_loc);
 
 				}
+			}	
+
+			snekSpeedupCounter += dt;
+			if (snekSpeedupCounter >= snekSpeedupPeriod)
+			{
+				snekSpeedupCounter = 0.0f;
+				snekMovePeriod -= 0.05f;
 			}
-			++snekSpeedupCounter;
-			
 		}
 	}
 }

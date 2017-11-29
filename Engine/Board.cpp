@@ -7,7 +7,7 @@ Board::Board(Graphics & gfx)
 {
 }
 
-void Board::DrawCell(Location & loc, Color c)
+void Board::DrawCell(const Location & loc, Color c)
 {
 	assert(loc.x >= 0);
 	assert(loc.x < width);
@@ -36,11 +36,6 @@ void Board::DrawBorder()
 	// bottom
 	gfx.DrawRect(left, bottom - borderWidth, right, bottom, borderColor);
 
-}
-
-
-void Board::ClampCell(Location & loc)
-{
 }
 
 
