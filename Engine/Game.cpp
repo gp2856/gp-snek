@@ -76,10 +76,10 @@ void Game::UpdateModel()
 				snekMoveCounter = 0;
 				Location next = snek.GetNextHeadLocation(delta_loc);
 
-				if (next == goal.GetLocation())
+				/*if (next == goal.GetLocation())
 				{
-					snek.Grow();
-				}
+					snek.GrowAndMoveBy(delta_loc);
+				}*/
 				if (!board.IsInsideBoard(snek.GetNextHeadLocation(delta_loc)) ||
 					snek.IsInTileExceptEnd(next))
 				{
@@ -90,7 +90,7 @@ void Game::UpdateModel()
 					const bool eating = next == goal.GetLocation();
 					if (eating)
 					{
-						snek.MoveBy(delta_loc);
+						snek.GrowAndMoveBy(delta_loc);
 						if (eating)
 						{
 							goal.Respawn(rng, board, snek);

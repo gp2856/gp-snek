@@ -3,7 +3,7 @@
 #include "Board.h"
 #include "Location.h"
 #include "Colors.h"
-#include <list>
+#include <vector>
 
 class Snake
 {
@@ -11,10 +11,10 @@ private:
 	class Segment
 	{
 	public:
+		Segment(const Location& in_loc);
+		Segment(Color c_in);
 		void Follow(const Segment& next);
-		void Draw(Board& board);
-		void InitHead(const Location& in_loc);
-		void InitBody(int nSegs);
+		void Draw(Board& board) const;
 		void MoveBy(const Location& delta_loc);
 		Location GetLocation() const;
 	private:
@@ -27,18 +27,22 @@ public:
 	Snake(const Location& loc);
 	
 	void MoveBy(const Location& delta_loc);
-	void Grow();
-	void Draw(Board& board);
+	void GrowAndMoveBy(const Location& delta_loc);
+	void Draw(Board& board) const;
 	Location GetNextHeadLocation(const Location & delta_loc) const;
 	bool IsInTileExceptEnd(const Location & target) const;
 	bool IsInTile(const Location & target) const;
-	int getLength();
+	int getLength() const;
 
 private:
 	
-	static constexpr Color HeadColor = Colors::White;
-	static constexpr Color BodyColor = Colors::White;
-	static constexpr int nSegmentsMax = 100;
-	Segment segments[nSegmentsMax];
-	int nSegments = 1;
+	static constexpr Color headColor = Colors::Yellow;
+	static constexpr int nBodyColors = 4;
+	static constexpr Color bodyColors[nBodyColors] = {
+		{ 10,100,32 },
+		{ 10,130,48 },
+		{ 18,160,48 },
+		{ 10,130,48 }
+	};
+	std::vector<Segment> segments;
 };

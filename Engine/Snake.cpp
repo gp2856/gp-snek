@@ -1,27 +1,27 @@
 #include "Snake.h"
 #include <assert.h>
 
+Snake::Segment::Segment(const Location & in_loc)
+{
+	loc = in_loc;
+	c = Snake::headColor;
+}
+
+Snake::Segment::Segment(Color c_in)
+{
+	c = c_in;
+}
+
 void Snake::Segment::Follow(const Segment & next)
 {
 	loc = next.loc;
 }
 
-void Snake::Segment::Draw(Board & board)
+void Snake::Segment::Draw(Board & board) const
 {
 	board.DrawCell(loc, c);
 }
 
-void Snake::Segment::InitHead(const Location & in_loc)
-{
-	loc = in_loc;
-	c = Snake::HeadColor;
-}
-
-void Snake::Segment::InitBody(int nSegs)
-{
-	
-	c = snakeColors[nSegs % 10];
-}
 
 void Snake::Segment::MoveBy(const Location & delta_loc)
 {
@@ -37,30 +37,29 @@ Location Snake::Segment::GetLocation() const
 
 Snake::Snake(const Location & loc)
 {
-	segments[0].InitHead(loc);
+	segments.emplace_back(loc);
 }
 
 void Snake::MoveBy(const Location & delta_loc)
 {
-	for (int i = nSegments; i > 0; i--)
+	for (size_t i = segments.size() - 1; i > 0; i--)
 	{
 		segments[i].Follow(segments[i-1]);
 	}
-	segments[0].MoveBy(delta_loc);
+	segments.front().MoveBy(delta_loc);
 }
 
-void Snake::Grow()
+void Snake::GrowAndMoveBy(const Location& delta_loc)
 {
-	assert(nSegments <= nSegmentsMax);
-	segments[nSegments].InitBody(nSegments);
-	nSegments++;
+	segments.emplace_back(bodyColors[segments.size() % nBodyColors]);
+	MoveBy(delta_loc);
 }
 
-void Snake::Draw(Board & board)
+void Snake::Draw(Board & board) const
 {
-	for (int i = 0; i < nSegments; ++i)
+	for (const auto& s: segments)
 	{
-		segments[i].Draw(board);
+		s.Draw(board);
 	}
 }
 
@@ -74,7 +73,7 @@ Location Snake::GetNextHeadLocation(const Location & delta_loc) const
 
 bool Snake::IsInTileExceptEnd(const Location & target) const
 {
-	for (int i = 0; i < nSegments - 1; i++)
+	for (size_t i = 0; i < segments.size() - 1; i++)
 	{
 		if (segments[i].GetLocation() == target)
 		{
@@ -86,9 +85,9 @@ bool Snake::IsInTileExceptEnd(const Location & target) const
 
 bool Snake::IsInTile(const Location & target) const
 {
-	for (int i = 0; i < nSegments; i++)
+	for (const auto& s: segments)
 	{
-		if (segments[i].GetLocation() == target)
+		if (s.GetLocation() == target)
 		{
 			return true;
 		}
@@ -96,7 +95,7 @@ bool Snake::IsInTile(const Location & target) const
 	return false;
 }
 
-int Snake::getLength()
+int Snake::getLength() const
 {
-	return nSegments;
+	return (int)segments.size();
 }
