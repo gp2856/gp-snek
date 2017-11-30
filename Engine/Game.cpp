@@ -121,12 +121,7 @@ void Game::UpdateModel()
 				}
 			}	
 
-			snekSpeedupCounter += dt;
-			if (snekSpeedupCounter >= snekSpeedupPeriod)
-			{
-				snekSpeedupCounter = 0.0f;
-				snekMovePeriod -= 0.05f;
-			}
+			snekMovePeriod = std::max(snekMovePeriod - dt * snekSpeedupFactor, snekMovePeriodMin);
 
 			poisonSpawnCounter += dt;
 			if (poisonSpawnCounter >= poisonSpawnPeriod)

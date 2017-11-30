@@ -59,11 +59,11 @@ private:
 	
 	// Timers and Counters //
 	FrameTimer ft;
-	static constexpr int snekMovePeriodMin = 4;
-	float snekMovePeriod = 0.75f;
+	static constexpr float snekMovePeriodMin = .000000000006;
+	static constexpr float snekSpeedupFactor = 0.01f;
+
+	float snekMovePeriod = 0.4f;
 	float snekMoveCounter = 0.0f;
-	float snekSpeedupPeriod = 10.0f;
-	float snekSpeedupCounter = 0.0f;
 	float poisonSpawnCounter = 0.0f;
 	float poisonSpawnPeriod = 5.0f;
 
