@@ -99,6 +99,16 @@ void Game::UpdateModel()
 							goal.Respawn(rng, board, snek);
 						}
 					}
+
+					for (auto & p : poison)
+					{
+						const bool eating = next == p.GetLocation();
+						if (eating)
+						{
+							GameIsOver = true;
+							break;
+						}
+					}
 					if (board.IsInsideBoard(snek.GetNextHeadLocation(delta_loc)))
 					{
 						snek.MoveBy(delta_loc);
