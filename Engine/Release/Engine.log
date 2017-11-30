@@ -1,0 +1,18 @@
+﻿  compilation header save succeeded; see C:\Users\Mike\Documents\Visual Studio 2017\Projects\T14-Snek-Start\Engine\FramebufferPS.shh
+  compilation header save succeeded; see C:\Users\Mike\Documents\Visual Studio 2017\Projects\T14-Snek-Start\Engine\FramebufferVS.shh
+  Board.cpp
+  DXErr.cpp
+  Game.cpp
+  Goal.cpp
+  Graphics.cpp
+  Keyboard.cpp
+  Location.cpp
+  Main.cpp
+  MainWindow.cpp
+  Mouse.cpp
+  Snake.cpp
+  SpriteCodex.cpp
+  Generating code
+  All 691 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  Finished generating code
+  Engine.vcxproj -> C:\Users\Mike\Documents\Visual Studio 2017\Projects\T14-Snek-Start\Release\Engine.exe
