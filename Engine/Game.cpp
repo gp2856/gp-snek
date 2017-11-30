@@ -127,6 +127,13 @@ void Game::UpdateModel()
 				snekSpeedupCounter = 0.0f;
 				snekMovePeriod -= 0.05f;
 			}
+
+			poisonSpawnCounter += dt;
+			if (poisonSpawnCounter >= poisonSpawnPeriod)
+			{
+				poisonSpawnCounter = 0;
+				poison.push_back(Goal(rng, board, snek, Colors::Red));
+			}
 		}
 	}
 }

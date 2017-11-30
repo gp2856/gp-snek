@@ -63,7 +63,9 @@ private:
 	float snekMovePeriod = 0.75f;
 	float snekMoveCounter = 0.0f;
 	float snekSpeedupPeriod = 10.0f;
-	float snekSpeedupCounter = 0.0;
+	float snekSpeedupCounter = 0.0f;
+	float poisonSpawnCounter = 0.0f;
+	float poisonSpawnPeriod = 5.0f;
 
 	// Flags //
 	bool suppressGrowth = false;
