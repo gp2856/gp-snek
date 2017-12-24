@@ -153,6 +153,7 @@ void Game::ComposeFrame()
 		}
 
 		board.DrawBorder();
+		board.draw_obstacles();
 	}
 
 }
