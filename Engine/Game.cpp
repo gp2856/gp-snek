@@ -132,6 +132,7 @@ void Game::ComposeFrame()
 	if (GameIsStarted)
 	{
 		snek.Draw(board);
+		board.draw_obstacles();
 		goal.Draw(board);
 		if (GameIsOver)
 		{
@@ -139,7 +140,7 @@ void Game::ComposeFrame()
 		}
 
 		board.DrawBorder();
-		board.draw_obstacles();
+		
 	}
 
 }
