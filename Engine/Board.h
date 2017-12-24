@@ -29,6 +29,6 @@ private:
 	static constexpr Color obstacle_color = Colors::Gray;
 	static constexpr int x = ((Graphics::ScreenWidth / 2) - (width * dimension)/2);
 	static constexpr int y = ((Graphics::ScreenHeight / 2) - (height * dimension)/2);
-	bool has_obstacle_[width * height] = { true };
+	bool has_obstacle_[width * height] = { false };
 	Graphics& gfx;
 };

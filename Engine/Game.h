@@ -55,7 +55,6 @@ private:
 	Board board;
 	Snake snek;
 	Goal goal;
-	std::vector<Goal> poison;
 	
 	// Timers and Counters //
 	FrameTimer ft;
@@ -64,8 +63,8 @@ private:
 
 	float snekMovePeriod = 0.4f;
 	float snekMoveCounter = 0.0f;
-	float poisonSpawnCounter = 0.0f;
-	float poisonSpawnPeriod = 5.0f;
+	float obstacle_spawn_counter_ = 0.0f;
+	float poison_spawn_period_ = 5.0f;
 
 	// Flags //
 	bool suppressGrowth = false;

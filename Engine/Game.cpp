@@ -31,10 +31,6 @@ Game::Game( MainWindow& wnd )
 	rng(std::random_device()()),
 	goal(rng, board, snek, Colors::Blue)
 {
-	for (int i = 0; i <= nStartPoison; i++)
-	{
-		poison.push_back(Goal(rng, board, snek, Colors::Red));
-	}
 }
 
 void Game::Go()
@@ -47,6 +43,7 @@ void Game::Go()
 
 void Game::UpdateModel()
 {
+	
 	const float dt = ft.Mark();
 	if (wnd.kbd.KeyIsPressed(VK_RETURN))
 	{
@@ -84,7 +81,8 @@ void Game::UpdateModel()
 
 				
 				if (!board.IsInsideBoard(snek.GetNextHeadLocation(delta_loc)) ||
-					snek.IsInTileExceptEnd(next))
+					snek.IsInTileExceptEnd(next) ||
+					board.check_for_obstacle(next))
 				{
 					GameIsOver = true;
 				}
@@ -100,15 +98,7 @@ void Game::UpdateModel()
 						}
 					}
 
-					for (auto & p : poison)
-					{
-						const bool eating = next == p.GetLocation();
-						if (eating)
-						{
-							GameIsOver = true;
-							break;
-						}
-					}
+					
 					if (board.IsInsideBoard(snek.GetNextHeadLocation(delta_loc)))
 					{
 						snek.MoveBy(delta_loc);
@@ -123,11 +113,11 @@ void Game::UpdateModel()
 
 			snekMovePeriod = std::max(snekMovePeriod - dt * snekSpeedupFactor, snekMovePeriodMin);
 
-			poisonSpawnCounter += dt;
-			if (poisonSpawnCounter >= poisonSpawnPeriod)
+			obstacle_spawn_counter_ += dt;
+			if (obstacle_spawn_counter_ >= poison_spawn_period_)
 			{
-				poisonSpawnCounter = 0;
-				poison.push_back(Goal(rng, board, snek, Colors::Red));
+				obstacle_spawn_counter_ = 0;
+				board.set_obstacle(rng, snek, goal);
 			}
 		}
 	}
@@ -143,10 +133,6 @@ void Game::ComposeFrame()
 	{
 		snek.Draw(board);
 		goal.Draw(board);
-		for (auto& p : poison)
-		{
-			p.Draw(board);
-		}
 		if (GameIsOver)
 		{
 			SpriteCodex::DrawGameOver((Graphics::ScreenWidth / 2) - (83 / 2), (Graphics::ScreenHeight / 2) - (63 / 2), gfx);
