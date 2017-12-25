@@ -15,7 +15,8 @@ public:
 	int GetGridHeight() const;
 	bool IsInsideBoard(const Location & loc) const;
 	int get_tile_type(const Location& loc) const;
-	void set_tile(std::mt19937 rng, const class Snake& snake, const class Goal& goal, const int type);
+	void set_random_tile_(std::mt19937 rng, const class Snake& snake, const class Goal& goal, const int type);
+	void set_tile_(const Location& loc, const int type);
 	void init_poison(std::mt19937 rng, const class Snake& snake, const class Goal& goal);
 	void draw_special_tiles();
 private:

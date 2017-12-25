@@ -92,6 +92,7 @@ void Game::UpdateModel()
 					const bool eating = next == goal.GetLocation();
 					if (eating)
 					{
+						
 						snek.GrowAndMoveBy(delta_loc);
 						if (eating)
 						{
@@ -99,6 +100,11 @@ void Game::UpdateModel()
 						}
 					}
 
+					if (board.get_tile_type(next) == 2)
+					{
+						snekMovePeriod = std::max(snekMovePeriod - dt * snekSpeedupFactor, snekMovePeriodMin);
+						board.set_tile_(next, 0);
+					}
 					
 					if (board.IsInsideBoard(snek.GetNextHeadLocation(delta_loc)))
 					{
@@ -118,7 +124,7 @@ void Game::UpdateModel()
 			if (obstacle_spawn_counter_ >= poison_spawn_period_)
 			{
 				obstacle_spawn_counter_ = 0;
-				board.set_tile(rng, snek, goal, 1);
+				board.set_random_tile_(rng, snek, goal, 1);
 			}
 		}
 	}

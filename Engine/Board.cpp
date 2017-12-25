@@ -63,7 +63,7 @@ int Board::get_tile_type(const Location & loc) const
 	return tile_type_[loc.x + loc.y * width];
 }
 
-void Board::set_tile(std::mt19937 rng, const Snake & snake, const Goal & goal, const int type)
+void Board::set_random_tile_(std::mt19937 rng, const Snake & snake, const Goal & goal, const int type)
 {
 	std::uniform_int_distribution<int> xDist(0, GetGridWidth() - 1);
 	std::uniform_int_distribution<int> yDist(0, GetGridHeight() - 1);
@@ -78,6 +78,11 @@ void Board::set_tile(std::mt19937 rng, const Snake & snake, const Goal & goal, c
 	tile_type_[newLoc.x + newLoc.y * width] = type;
 }
 
+void Board::set_tile_(const Location& loc, const int type)
+{
+	tile_type_[loc.x + loc.y * width] = type;
+}
+
 void Board::init_poison(std::mt19937 rng, const Snake & snake, const Goal & goal)
 {
 	std::uniform_int_distribution<int> xDist(0, GetGridWidth() - 1);
@@ -88,7 +93,7 @@ void Board::init_poison(std::mt19937 rng, const Snake & snake, const Goal & goal
 	for (int i = 0; i <= n_poison_; i++)
 	{
 		newLoc = { xDist(rng), yDist(rng) };
-		if (get_tile_type(newLoc) != 1 || snake.IsInTile(newLoc) || !(goal.GetLocation() == newLoc))
+		if (get_tile_type(newLoc) != 1 || snake.IsInTile(newLoc) || get_tile_type(goal.GetLocation()) != 0)
 		{
 			tile_type_[newLoc.x + newLoc.y * width] = 2;
 		}
