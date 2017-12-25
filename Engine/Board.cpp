@@ -58,12 +58,12 @@ bool Board::IsInsideBoard(const Location & loc) const
 		loc.y >= 0 && loc.y < height;
 }
 
-bool Board::check_for_obstacle(const Location & loc) const
+int Board::get_tile_type(const Location & loc) const
 {
-	return has_obstacle_[loc.x + loc.y * width];
+	return tile_type_[loc.x + loc.y * width];
 }
 
-void Board::set_obstacle(std::mt19937 rng, const Snake & snake, const Goal & goal)
+void Board::set_tile(std::mt19937 rng, const Snake & snake, const Goal & goal, int type)
 {
 	std::uniform_int_distribution<int> xDist(0, GetGridWidth() - 1);
 	std::uniform_int_distribution<int> yDist(0, GetGridHeight() - 1);
@@ -73,20 +73,24 @@ void Board::set_obstacle(std::mt19937 rng, const Snake & snake, const Goal & goa
 	{
 		newLoc.x = xDist(rng);
 		newLoc.y = yDist(rng);
-	} while (snake.IsInTile(newLoc) || check_for_obstacle(newLoc) || goal.GetLocation() == newLoc);
+	} while (snake.IsInTile(newLoc) || get_tile_type(newLoc) != 0 || goal.GetLocation() == newLoc);
 
-	has_obstacle_[newLoc.x + newLoc.y * width] = true;
+	tile_type_[newLoc.x + newLoc.y * width] = type;
 }
 
-void Board::draw_obstacles()
+void Board::draw_special_tiles()
 {
 	for (int y = 0; y < height; y++)
 	{
 		for (int x = 0; x < width; x++)
 		{
-			if (check_for_obstacle({x,y}))
+			if (get_tile_type({x,y}) == 1)
 			{
 				DrawCell({ x,y }, obstacle_color);
+			}
+			else if (get_tile_type({x,y}) == 2)
+			{
+				DrawCell({ x,y }, poison_color);
 			}
 		}
 	}
