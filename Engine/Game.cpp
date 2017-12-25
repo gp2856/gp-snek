@@ -31,6 +31,7 @@ Game::Game( MainWindow& wnd )
 	rng(std::random_device()()),
 	goal(rng, board, snek, Colors::Blue)
 {
+	board.init_poison(rng, snek, goal);
 }
 
 void Game::Go()
@@ -70,7 +71,7 @@ void Game::UpdateModel()
 				delta_loc = { 1,0 };
 			}
 
-
+			
 
 			snekMoveCounter += dt;
 			if (snekMoveCounter >= snekMovePeriod)
@@ -132,7 +133,6 @@ void Game::ComposeFrame()
 	if (GameIsStarted)
 	{
 		snek.Draw(board);
-		board.draw_special_tiles();
 		goal.Draw(board);
 		if (GameIsOver)
 		{
@@ -140,6 +140,7 @@ void Game::ComposeFrame()
 		}
 
 		board.DrawBorder();
+		board.draw_special_tiles();
 		
 	}
 

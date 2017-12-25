@@ -66,6 +66,7 @@ private:
 	float obstacle_spawn_counter_ = 0.0f;
 	float poison_spawn_period_ = 5.0f;
 
+
 	// Flags //
 	bool suppressGrowth = false;
 	bool GameIsOver = false;

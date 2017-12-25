@@ -78,6 +78,23 @@ void Board::set_tile(std::mt19937 rng, const Snake & snake, const Goal & goal, c
 	tile_type_[newLoc.x + newLoc.y * width] = type;
 }
 
+void Board::init_poison(std::mt19937 rng, const Snake & snake, const Goal & goal)
+{
+	std::uniform_int_distribution<int> xDist(0, GetGridWidth() - 1);
+	std::uniform_int_distribution<int> yDist(0, GetGridHeight() - 1);
+
+	Location newLoc;
+
+	for (int i = 0; i <= n_poison_; i++)
+	{
+		newLoc = { xDist(rng), yDist(rng) };
+		if (get_tile_type(newLoc) != 1 || snake.IsInTile(newLoc) || !(goal.GetLocation() == newLoc))
+		{
+			tile_type_[newLoc.x + newLoc.y * width] = 2;
+		}
+	}
+}
+
 void Board::draw_special_tiles()
 {
 	for (int y = 0; y < height; y++)
