@@ -32,6 +32,7 @@ Game::Game( MainWindow& wnd )
 	goal(rng, board, snek, Colors::Blue)
 {
 	board.init_poison(rng, snek, goal);
+	snd_title_.Play(1.0f, 1.0f);
 }
 
 void Game::Go()
@@ -48,6 +49,7 @@ void Game::UpdateModel()
 	const float dt = ft.Mark();
 	if (wnd.kbd.KeyIsPressed(VK_RETURN))
 	{
+		snd_music_.Play(1.0f, 1.0f);
 		GameIsStarted = true;
 	}
 	if (GameIsStarted)
@@ -86,6 +88,8 @@ void Game::UpdateModel()
 					board.get_tile_type(next) == 1)
 				{
 					GameIsOver = true;
+					snd_fart_.Play();
+					snd_music_.StopAll();
 				}
 				else
 				{
@@ -94,10 +98,8 @@ void Game::UpdateModel()
 					{
 						
 						snek.GrowAndMoveBy(delta_loc);
-						if (eating)
-						{
-							goal.Respawn(rng, board, snek);
-						}
+						goal.Respawn(rng, board, snek);
+						sfxEat.Play(rng, 0.8f);
 					}
 
 					if (board.get_tile_type(next) == 2)
@@ -114,6 +116,7 @@ void Game::UpdateModel()
 					{
 						GameIsOver = true;
 					}
+					sfxSlither.Play(rng, 0.8f);
 
 				}
 			}	

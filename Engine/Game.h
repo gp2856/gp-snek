@@ -28,6 +28,7 @@
 #include "Snake.h"
 #include "Goal.h"
 #include "FrameTimer.h"
+#include "SoundEffect.h"
 #include <random>
 
 class Game
@@ -78,6 +79,10 @@ private:
 
 
 	// ETC //
-	
+	SoundEffect sfxEat = SoundEffect({ L"Sounds\\Eat.wav" });
+	SoundEffect sfxSlither = SoundEffect({ L"Sounds\\Slither0.wav",L"Sounds\\Slither1.wav",L"Sounds\\Slither2.wav" });
+	Sound snd_music_ = Sound(L"Sounds\\Music_Loop.wav", Sound::LoopType::AutoFullSound);
+	Sound snd_title_ = Sound(L"Sounds\\Title.wav");
+	Sound snd_fart_ = Sound(L"Sounds\\Fart.wav");
 	/********************************/
 };
