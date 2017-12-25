@@ -82,7 +82,7 @@ void Game::UpdateModel()
 				
 				if (!board.IsInsideBoard(snek.GetNextHeadLocation(delta_loc)) ||
 					snek.IsInTileExceptEnd(next) ||
-					board.check_for_obstacle(next))
+					board.get_tile_type(next) == 1)
 				{
 					GameIsOver = true;
 				}
@@ -117,7 +117,7 @@ void Game::UpdateModel()
 			if (obstacle_spawn_counter_ >= poison_spawn_period_)
 			{
 				obstacle_spawn_counter_ = 0;
-				board.set_obstacle(rng, snek, goal);
+				board.set_tile(rng, snek, goal, 1);
 			}
 		}
 	}
@@ -132,7 +132,7 @@ void Game::ComposeFrame()
 	if (GameIsStarted)
 	{
 		snek.Draw(board);
-		board.draw_obstacles();
+		board.draw_special_tiles();
 		goal.Draw(board);
 		if (GameIsOver)
 		{

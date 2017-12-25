@@ -63,7 +63,7 @@ int Board::get_tile_type(const Location & loc) const
 	return tile_type_[loc.x + loc.y * width];
 }
 
-void Board::set_tile(std::mt19937 rng, const Snake & snake, const Goal & goal, int type)
+void Board::set_tile(std::mt19937 rng, const Snake & snake, const Goal & goal, const int type)
 {
 	std::uniform_int_distribution<int> xDist(0, GetGridWidth() - 1);
 	std::uniform_int_distribution<int> yDist(0, GetGridHeight() - 1);
