@@ -54,9 +54,7 @@ private:
 	int nStartPoison = 5;
 	// Game Objects //
 	Board board;
-	Snake snek;
-	Goal goal;
-	
+	Snake snek;	
 	// Timers and Counters //
 	FrameTimer ft;
 	static constexpr float snekMovePeriodMin = .000000000006;

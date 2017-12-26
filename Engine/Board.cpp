@@ -58,61 +58,103 @@ bool Board::IsInsideBoard(const Location & loc) const
 		loc.y >= 0 && loc.y < height;
 }
 
-int Board::get_tile_type(const Location & loc) const
+Board::TileTypes Board::get_tile_type(const Location & loc) const
 {
-	return tile_type_[loc.x + loc.y * width];
+	return tiles_[loc.x + loc.y * width];
 }
 
-void Board::set_random_tile_(std::mt19937 rng, const Snake & snake, const Goal & goal, const int type)
+const Location Board::get_food_loc() const
 {
-	std::uniform_int_distribution<int> xDist(0, GetGridWidth() - 1);
-	std::uniform_int_distribution<int> yDist(0, GetGridHeight() - 1);
+	for (auto y = 0; y < height; y++)
+	{
+		for (auto x = 0; x < width; x++)
+		{
+			if(get_tile_type({x,y}) == TileTypes::kFood)
+			{
+				return { x,y };
+			}
+		}
+	}
+	return { 0,0 };
+}
+
+void Board::set_random_tile_(std::mt19937 rng, const Snake & snake, const TileTypes type)
+{
+	const std::uniform_int_distribution<int> xDist(0, GetGridWidth() - 1);
+	const std::uniform_int_distribution<int> yDist(0, GetGridHeight() - 1);
 
 	Location newLoc;
 	do
 	{
 		newLoc.x = xDist(rng);
 		newLoc.y = yDist(rng);
-	} while (snake.IsInTile(newLoc) || get_tile_type(newLoc) != 0 || goal.GetLocation() == newLoc);
+	} while (snake.IsInTile(newLoc) || get_tile_type(newLoc) != TileTypes::kEmpty);
 
-	tile_type_[newLoc.x + newLoc.y * width] = type;
+	tiles_[newLoc.x + newLoc.y * width] = type;
 }
 
-void Board::set_tile_(const Location& loc, const int type)
+void Board::set_tile_(const Location& loc, const TileTypes type)
 {
-	tile_type_[loc.x + loc.y * width] = type;
+	tiles_[loc.x + loc.y * width] = type;
 }
 
-void Board::init_poison(std::mt19937 rng, const Snake & snake, const Goal & goal)
+void Board::clear_tile(const Location & loc)
 {
-	std::uniform_int_distribution<int> xDist(0, GetGridWidth() - 1);
-	std::uniform_int_distribution<int> yDist(0, GetGridHeight() - 1);
+	tiles_[loc.x + loc.y * width] = TileTypes::kEmpty;
+}
 
-	Location newLoc;
-
-	for (int i = 0; i <= n_poison_; i++)
+void Board::move_food(const std::mt19937 rng, const Snake& snake)
+{
+	for (auto y = 0; y < height; y++)
 	{
-		newLoc = { xDist(rng), yDist(rng) };
-		if (get_tile_type(newLoc) != 1 || snake.IsInTile(newLoc) || get_tile_type(goal.GetLocation()) != 0)
+		for (auto x = 0; x < width; x++)
 		{
-			tile_type_[newLoc.x + newLoc.y * width] = 2;
+			if (get_tile_type({ x,y }) == TileTypes::kFood)
+			{
+				clear_tile({ x,y });
+				set_random_tile_(rng, snake, TileTypes::kFood);
+			}
 		}
 	}
 }
 
-void Board::draw_special_tiles()
+void Board::init_poison(std::mt19937 rng, const Snake & snake)
 {
-	for (int y = 0; y < height; y++)
+	std::uniform_int_distribution<int> xDist(0, GetGridWidth() - 1);
+	std::uniform_int_distribution<int> yDist(0, GetGridHeight() - 1);
+
+
+	for (auto i = 0; i <= n_poison_; i++)
 	{
-		for (int x = 0; x < width; x++)
+		const Location newLoc = { xDist(rng), yDist(rng) };
+		if (get_tile_type(newLoc) == TileTypes::kEmpty && !snake.IsInTile(newLoc))
 		{
-			if (get_tile_type({x,y}) == 1)
+			tiles_[newLoc.x + newLoc.y * width] = TileTypes::kPoison;
+		}
+	}
+}
+
+void Board::draw_tiles()
+{
+	for (auto y = 0; y < height; y++)
+	{
+		for (auto x = 0; x < width; x++)
+		{
+			switch(get_tile_type({x,y}))
 			{
+			case TileTypes::kEmpty:
+				break;
+			case TileTypes::kFood:
+				DrawCell({ x,y }, goal_color);
+				break;
+			case TileTypes::kObstacle:
 				DrawCell({ x,y }, obstacle_color);
-			}
-			else if (get_tile_type({x,y}) == 2)
-			{
+				break;
+			case TileTypes::kPoison:
 				DrawCell({ x,y }, poison_color);
+				break;
+			default:
+				break;
 			}
 		}
 	}

@@ -28,10 +28,10 @@ Game::Game( MainWindow& wnd )
 	gfx( wnd ),
 	board(gfx),
 	snek({ 1, 1 }),
-	rng(std::random_device()()),
-	goal(rng, board, snek, Colors::Blue)
+	rng(std::random_device()())
 {
-	board.init_poison(rng, snek, goal);
+	board.init_poison(rng, snek);
+	board.set_random_tile_(rng, snek, Board::TileTypes::kFood);
 	snd_title_.Play(1.0f, 1.0f);
 }
 
@@ -80,12 +80,12 @@ void Game::UpdateModel()
 			{
 				snekMoveCounter = 0;
 				const float dt = ft.Mark();
-				Location next = snek.GetNextHeadLocation(delta_loc);
+				const Location next = snek.GetNextHeadLocation(delta_loc);
 
 				
 				if (!board.IsInsideBoard(snek.GetNextHeadLocation(delta_loc)) ||
 					snek.IsInTileExceptEnd(next) ||
-					board.get_tile_type(next) == 1)
+					board.get_tile_type(next) == Board::TileTypes::kObstacle)
 				{
 					GameIsOver = true;
 					snd_fart_.Play();
@@ -93,19 +93,19 @@ void Game::UpdateModel()
 				}
 				else
 				{
-					const bool eating = next == goal.GetLocation();
+					const bool eating = next == board.get_food_loc();
 					if (eating)
 					{
 						
 						snek.GrowAndMoveBy(delta_loc);
-						goal.Respawn(rng, board, snek);
+						board.move_food(rng, snek);
 						sfxEat.Play(rng, 0.8f);
 					}
 
-					if (board.get_tile_type(next) == 2)
+					if (board.get_tile_type(next) == Board::TileTypes::kPoison)
 					{
 						snekMovePeriod = std::max(snekMovePeriod - dt * snekSpeedupFactor, snekMovePeriodMin);
-						board.set_tile_(next, 0);
+						board.clear_tile(next);
 					}
 					
 					if (board.IsInsideBoard(snek.GetNextHeadLocation(delta_loc)))
@@ -127,7 +127,7 @@ void Game::UpdateModel()
 			if (obstacle_spawn_counter_ >= poison_spawn_period_)
 			{
 				obstacle_spawn_counter_ = 0;
-				board.set_random_tile_(rng, snek, goal, 1);
+				board.set_random_tile_(rng, snek, Board::TileTypes::kObstacle);
 			}
 		}
 	}
@@ -141,16 +141,15 @@ void Game::ComposeFrame()
 	}
 	if (GameIsStarted)
 	{
+		
 		snek.Draw(board);
-		goal.Draw(board);
+		board.DrawBorder();
+		board.draw_tiles();
+		
 		if (GameIsOver)
 		{
 			SpriteCodex::DrawGameOver((Graphics::ScreenWidth / 2) - (83 / 2), (Graphics::ScreenHeight / 2) - (63 / 2), gfx);
 		}
-
-		board.DrawBorder();
-		board.draw_special_tiles();
-		
 	}
 
 }

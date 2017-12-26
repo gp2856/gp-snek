@@ -8,17 +8,28 @@
 class Board
 {
 public:
+	enum class TileTypes
+	{
+		kEmpty,
+		kObstacle,
+		kFood,
+		kPoison
+	};
+public:
 	Board(Graphics& gfx);
 	void DrawCell(const Location& loc, const Color c);
 	void DrawBorder();
 	int GetGridWidth() const;
 	int GetGridHeight() const;
 	bool IsInsideBoard(const Location & loc) const;
-	int get_tile_type(const Location& loc) const;
-	void set_random_tile_(std::mt19937 rng, const class Snake& snake, const class Goal& goal, const int type);
-	void set_tile_(const Location& loc, const int type);
-	void init_poison(std::mt19937 rng, const class Snake& snake, const class Goal& goal);
-	void draw_special_tiles();
+	TileTypes get_tile_type(const Location& loc) const;
+	const Location get_food_loc() const;
+	void set_random_tile_(std::mt19937 rng, const class Snake& snake, const TileTypes type);
+	void set_tile_(const Location& loc, const TileTypes type);
+	void clear_tile(const Location& loc);
+	void move_food(const std::mt19937 rng, const class Snake& snake);
+	void init_poison(std::mt19937 rng, const class Snake& snake);
+	void draw_tiles();
 private:
 	static constexpr int dimension = 20;
 	static constexpr int width = 40;
@@ -30,10 +41,10 @@ private:
 	static constexpr Color borderColor = Colors::AliceBlue;
 	static constexpr Color obstacle_color = Colors::Gray;
 	static constexpr Color poison_color = Colors::Cyan;
+	static constexpr Color goal_color = Colors::Red;
 	static constexpr int x = ((Graphics::ScreenWidth / 2) - (width * dimension)/2);
 	static constexpr int y = ((Graphics::ScreenHeight / 2) - (height * dimension)/2);
 	static constexpr int n_poison_ = width * height / 3;
-	// 0: empty, 1: obstacle, 2: poison
-	int tile_type_[width * height] = { 0 };
+	TileTypes tiles_[width * height] = { TileTypes::kEmpty };
 	Graphics& gfx;
 };
