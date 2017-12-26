@@ -30,6 +30,7 @@ Game::Game( MainWindow& wnd )
 	snek({ 1, 1 }),
 	rng(std::random_device()())
 {
+	std::fill_n(lives_, n_lives_, true);
 	board.init_poison(rng, snek);
 	board.set_random_tile_(rng, snek, Board::TileTypes::kFood);
 	snd_title_.Play(1.0f, 1.0f);
@@ -87,9 +88,13 @@ void Game::UpdateModel()
 					snek.IsInTileExceptEnd(next) ||
 					board.get_tile_type(next) == Board::TileTypes::kObstacle)
 				{
-					GameIsOver = true;
+					lose_a_life();
 					snd_fart_.Play();
-					snd_music_.StopAll();
+					if (out_of_lives())
+					{
+						GameIsOver = true;
+						snd_music_.StopAll();
+					}
 				}
 				else
 				{
@@ -133,6 +138,23 @@ void Game::UpdateModel()
 	}
 }
 
+void Game::lose_a_life()
+{
+	for (auto i = 0; i < n_lives_; i++)
+	{
+		if (lives_[i])
+		{
+			lives_[i] = false;
+			break;
+		}
+	}
+}
+
+bool Game::out_of_lives()
+{
+	return !lives_[n_lives_ - 1];
+}
+
 void Game::ComposeFrame()
 {
 	if (!GameIsStarted)
@@ -141,7 +163,13 @@ void Game::ComposeFrame()
 	}
 	if (GameIsStarted)
 	{
-		
+		for (auto i = 0; i < n_lives_; i++)
+		{
+			if (lives_[i])
+			{
+				SpriteCodex::DrawLife(10, 50 + 20 * i, gfx);
+			}
+		}
 		snek.Draw(board);
 		board.DrawBorder();
 		board.draw_tiles();

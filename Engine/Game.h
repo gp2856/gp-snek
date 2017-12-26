@@ -41,6 +41,8 @@ public:
 private:
 	void ComposeFrame();
 	void UpdateModel();
+	void lose_a_life();
+	bool out_of_lives();
 	/********************************/
 	/*  User Functions              */
 	/********************************/
@@ -65,11 +67,13 @@ private:
 	float obstacle_spawn_counter_ = 0.0f;
 	float poison_spawn_period_ = 5.0f;
 
+	static constexpr int n_lives_ = 3;
 
 	// Flags //
 	bool suppressGrowth = false;
 	bool GameIsOver = false;
 	bool GameIsStarted = false;
+	bool lives_[n_lives_] = { true };
 
 	// Locations //
 	Location snekStart = { 0, 0 };

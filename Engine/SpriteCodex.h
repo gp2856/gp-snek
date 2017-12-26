@@ -7,4 +7,5 @@ class SpriteCodex
 public:
 	static void DrawGameOver( int x,int y,Graphics& gfx );
 	static void DrawTitle( int x,int y,Graphics& gfx );
+	static void DrawLife(const int x, const int y, Graphics& gfx);
 };
