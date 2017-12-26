@@ -27,7 +27,7 @@ Game::Game( MainWindow& wnd )
 	wnd( wnd ),
 	gfx( wnd ),
 	board(gfx),
-	snek({ 1, 1 }),
+	snek({ Board::width/2, Board::height/2 }),
 	rng(std::random_device()())
 {
 	std::fill_n(lives_, n_lives_, true);
