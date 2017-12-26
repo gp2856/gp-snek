@@ -95,33 +95,43 @@ void Game::UpdateModel()
 						GameIsOver = true;
 						snd_music_.StopAll();
 					}
+					else
+					{
+						snek.reset();
+						delta_loc = { 0,0 };
+						snekMovePeriod = 0.4f;
+					}
 				}
 				else
 				{
 					const bool eating = next == board.get_food_loc();
-					if (eating)
+					const bool moving = (abs(delta_loc.x) + abs(delta_loc.y)) == 1;
+					if (moving)
 					{
-						
-						snek.GrowAndMoveBy(delta_loc);
-						board.move_food(rng, snek);
-						sfxEat.Play(rng, 0.8f);
-					}
+						if (eating)
+						{
 
-					if (board.get_tile_type(next) == Board::TileTypes::kPoison)
-					{
-						snekMovePeriod = std::max(snekMovePeriod - dt * snekSpeedupFactor, snekMovePeriodMin);
-						board.clear_tile(next);
+							snek.GrowAndMoveBy(delta_loc);
+							board.move_food(rng, snek);
+							sfxEat.Play(rng, 0.8f);
+						}
+
+						if (board.get_tile_type(next) == Board::TileTypes::kPoison)
+						{
+							snekMovePeriod = std::max(snekMovePeriod - dt * snekSpeedupFactor, snekMovePeriodMin);
+							board.clear_tile(next);
+						}
+
+						if (board.IsInsideBoard(snek.GetNextHeadLocation(delta_loc)))
+						{
+							snek.MoveBy(delta_loc);
+						}
+						else
+						{
+							GameIsOver = true;
+						}
+						sfxSlither.Play(rng, 0.8f);
 					}
-					
-					if (board.IsInsideBoard(snek.GetNextHeadLocation(delta_loc)))
-					{
-						snek.MoveBy(delta_loc);
-					}
-					else
-					{
-						GameIsOver = true;
-					}
-					sfxSlither.Play(rng, 0.8f);
 
 				}
 			}	

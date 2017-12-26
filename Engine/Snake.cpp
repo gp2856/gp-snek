@@ -34,6 +34,11 @@ Location Snake::Segment::GetLocation() const
 	return loc;
 }
 
+void Snake::Segment::set_loc(const Location& in_loc)
+{
+	loc = in_loc;
+}
+
 
 Snake::Snake(const Location & loc)
 {
@@ -98,4 +103,11 @@ bool Snake::IsInTile(const Location & target) const
 int Snake::getLength() const
 {
 	return (int)segments.size();
+}
+
+void Snake::reset()
+{
+	segments.clear();
+	segments.emplace_back(headColor);
+	segments[0].set_loc({ Board::width / 2, Board::height / 2 });
 }

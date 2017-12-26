@@ -77,7 +77,7 @@ private:
 
 	// Locations //
 	Location snekStart = { 0, 0 };
-	Location delta_loc = { 0, 1};
+	Location delta_loc = { 0, 0};
 
 
 	// ETC //

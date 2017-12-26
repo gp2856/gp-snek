@@ -17,6 +17,7 @@ private:
 		void Draw(Board& board) const;
 		void MoveBy(const Location& delta_loc);
 		Location GetLocation() const;
+		void set_loc(const Location& in_loc);
 	private:
 		Color snakeColors[10] = { Colors::White, Colors::Gray, Colors::LightGray, Colors::Red, Colors::Green, Colors::Blue, Colors::Yellow, Colors::Cyan, Colors::Magenta, Colors::AliceBlue };
 		Location loc;
@@ -33,6 +34,7 @@ public:
 	bool IsInTileExceptEnd(const Location & target) const;
 	bool IsInTile(const Location & target) const;
 	int getLength() const;
+	void reset();
 
 private:
 	
