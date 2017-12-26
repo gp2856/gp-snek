@@ -50,7 +50,7 @@ void Game::UpdateModel()
 	const float dt = ft.Mark();
 	if (wnd.kbd.KeyIsPressed(VK_RETURN))
 	{
-		snd_music_.Play(1.0f, 1.0f);
+		snd_music_.Play(1.0f, 0.6f);
 		GameIsStarted = true;
 	}
 	if (GameIsStarted)
