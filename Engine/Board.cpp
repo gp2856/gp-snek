@@ -123,13 +123,13 @@ void Board::move_food(const std::mt19937 rng, const Snake& snake)
 	}
 }
 
-void Board::init_poison(std::mt19937 rng, const Snake & snake)
+void Board::init_poison(std::mt19937 rng, const Snake & snake, const int count)
 {
 	std::uniform_int_distribution<int> xDist(0, GetGridWidth() - 1);
 	std::uniform_int_distribution<int> yDist(0, GetGridHeight() - 1);
 
 
-	for (auto i = 0; i <= n_poison_; i++)
+	for (auto i = 0; i <= count; i++)
 	{
 		const Location newLoc = { xDist(rng), yDist(rng) };
 		if (get_tile_type(newLoc) == TileTypes::kEmpty && !snake.IsInTile(newLoc))

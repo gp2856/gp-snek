@@ -29,7 +29,7 @@ public:
 	void set_tile_(const Location& loc, const TileTypes type);
 	void clear_tile(const Location& loc);
 	void move_food(const std::mt19937 rng, const class Snake& snake);
-	void init_poison(std::mt19937 rng, const class Snake& snake);
+	void init_poison(std::mt19937 rng, const class Snake& snake, const int count);
 	void draw_tiles();
 private:
 	Graphics & gfx;
