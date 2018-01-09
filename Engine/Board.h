@@ -3,6 +3,7 @@
 #include "Location.h"
 #include "Graphics.h"
 #include "Colors.h"
+#include "GameSettings.h"
 #include <random>
 
 class Board
@@ -16,9 +17,7 @@ public:
 		kPoison
 	};
 public:
-	Board(Graphics& gfx);
-	static constexpr int width = 40;
-	static constexpr int height = 30;
+	Board(Graphics& gfx, const GameSettings& config);
 	void DrawCell(const Location& loc, const Color c);
 	void DrawBorder();
 	int GetGridWidth() const;
@@ -33,7 +32,10 @@ public:
 	void init_poison(std::mt19937 rng, const class Snake& snake);
 	void draw_tiles();
 private:
-	static constexpr int dimension = 20;
+	Graphics & gfx;
+	int dimension;
+	int width;
+	int height;
 	static constexpr int padding = 5;
 	static constexpr int borderWidth = 4;
 	static constexpr int borderPadding = 2;
@@ -42,9 +44,8 @@ private:
 	static constexpr Color obstacle_color = Colors::Gray;
 	static constexpr Color poison_color = Colors::Cyan;
 	static constexpr Color goal_color = Colors::Red;
-	static constexpr int x = ((Graphics::ScreenWidth / 2) - (width * dimension)/2);
-	static constexpr int y = ((Graphics::ScreenHeight / 2) - (height * dimension)/2);
-	static constexpr int n_poison_ = width * height / 3;
-	TileTypes tiles_[width * height] = { TileTypes::kEmpty };
-	Graphics& gfx;
+	int x = ((Graphics::ScreenWidth / 2) - (width * dimension)/2);
+	int y = ((Graphics::ScreenHeight / 2) - (height * dimension)/2);
+	TileTypes *tiles_;
+	
 };

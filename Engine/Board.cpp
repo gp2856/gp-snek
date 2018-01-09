@@ -3,10 +3,15 @@
 #include "Goal.h"
 #include <assert.h>
 
-Board::Board(Graphics & gfx)
+Board::Board(Graphics & gfx, const GameSettings& config)
 	:
-	gfx(gfx)
+	gfx(gfx),
+	dimension(config.get_tile_size()),
+	width(config.get_board_width()),
+	height(config.get_board_height())
+	
 {
+	tiles_ = new TileTypes[width * height];
 }
 
 void Board::DrawCell(const Location & loc, Color c)
