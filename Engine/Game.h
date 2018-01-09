@@ -29,7 +29,9 @@
 #include "Goal.h"
 #include "FrameTimer.h"
 #include "SoundEffect.h"
+#include "GameSettings.h"
 #include <random>
+#include <string>
 
 class Game
 {
@@ -51,12 +53,15 @@ private:
 	Graphics gfx;
 	/********************************/
 	/*  User Variables              */
-
 	std::mt19937 rng;
-	int nStartPoison = 5;
+	
+	
+	int n_poison;
 	// Game Objects //
+	GameSettings config;
 	Board board;
 	Snake snek;	
+	
 	// Timers and Counters //
 	FrameTimer ft;
 	static constexpr float snekMovePeriodMin = .000000000006;
@@ -81,6 +86,8 @@ private:
 
 
 	// ETC //
+	
+	std::string config_path = "config.txt";
 	SoundEffect sfxEat = SoundEffect({ L"Sounds\\Eat.wav" });
 	SoundEffect sfxSlither = SoundEffect({ L"Sounds\\Slither0.wav",L"Sounds\\Slither1.wav",L"Sounds\\Slither2.wav" });
 	Sound snd_music_ = Sound(L"Sounds\\Music_Loop.wav", Sound::LoopType::AutoFullSound);

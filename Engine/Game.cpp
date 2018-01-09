@@ -26,12 +26,15 @@ Game::Game( MainWindow& wnd )
 	:
 	wnd( wnd ),
 	gfx( wnd ),
-	board(gfx),
-	snek({ Board::width/2, Board::height/2 }),
-	rng(std::random_device()())
+	rng(std::random_device()()),
+	config(config_path),
+	board(gfx, config),
+	snek({ board.GetGridWidth()/2, board.GetGridHeight()/2 })
+	
 {
+	n_poison = config.get_n_poison();
 	std::fill_n(lives_, n_lives_, true);
-	board.init_poison(rng, snek);
+	board.init_poison(rng, snek, n_poison);
 	board.set_random_tile_(rng, snek, Board::TileTypes::kFood);
 	snd_title_.Play(1.0f, 1.0f);
 }
