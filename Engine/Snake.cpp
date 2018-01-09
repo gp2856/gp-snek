@@ -105,9 +105,9 @@ int Snake::getLength() const
 	return (int)segments.size();
 }
 
-void Snake::reset()
+void Snake::reset(const Board& board)
 {
 	segments.clear();
 	segments.emplace_back(headColor);
-	segments[0].set_loc({ Board::width / 2, Board::height / 2 });
+	segments[0].set_loc({ board.GetGridWidth() / 2, board.GetGridHeight() / 2 });
 }

@@ -1,0 +1,14 @@
+[Tile Size]
+15
+
+[Board Dimensions]
+25 35
+
+[Number of Poison]
+20
+
+[Number of Food]
+1
+
+[Snake Speedup Period]
+0.6f

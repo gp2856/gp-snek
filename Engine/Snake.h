@@ -34,7 +34,7 @@ public:
 	bool IsInTileExceptEnd(const Location & target) const;
 	bool IsInTile(const Location & target) const;
 	int getLength() const;
-	void reset();
+	void reset(const Board& board);
 
 private:
 	

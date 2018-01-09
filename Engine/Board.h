@@ -44,8 +44,8 @@ private:
 	static constexpr Color obstacle_color = Colors::Gray;
 	static constexpr Color poison_color = Colors::Cyan;
 	static constexpr Color goal_color = Colors::Red;
-	int x = ((Graphics::ScreenWidth / 2) - (width * dimension)/2);
-	int y = ((Graphics::ScreenHeight / 2) - (height * dimension)/2);
+	int x = 75;
+	int y = 35;
 	TileTypes *tiles_;
 	
 };

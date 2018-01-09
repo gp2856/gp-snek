@@ -27,7 +27,7 @@ Game::Game( MainWindow& wnd )
 	wnd( wnd ),
 	gfx( wnd ),
 	rng(std::random_device()()),
-	config(config_path),
+	config("config.txt"),
 	board(gfx, config),
 	snek({ board.GetGridWidth()/2, board.GetGridHeight()/2 })
 	
@@ -100,7 +100,7 @@ void Game::UpdateModel()
 					}
 					else
 					{
-						snek.reset();
+						snek.reset(board);
 						delta_loc = { 0,0 };
 						snekMovePeriod = 0.4f;
 					}

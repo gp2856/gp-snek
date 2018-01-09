@@ -86,8 +86,6 @@ private:
 
 
 	// ETC //
-	
-	std::string config_path = "config.txt";
 	SoundEffect sfxEat = SoundEffect({ L"Sounds\\Eat.wav" });
 	SoundEffect sfxSlither = SoundEffect({ L"Sounds\\Slither0.wav",L"Sounds\\Slither1.wav",L"Sounds\\Slither2.wav" });
 	Sound snd_music_ = Sound(L"Sounds\\Music_Loop.wav", Sound::LoopType::AutoFullSound);

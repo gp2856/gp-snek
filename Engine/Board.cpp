@@ -8,10 +8,14 @@ Board::Board(Graphics & gfx, const GameSettings& config)
 	gfx(gfx),
 	dimension(config.get_tile_size()),
 	width(config.get_board_width()),
-	height(config.get_board_height())
+	height(config.get_board_height()),
+	tiles_(new TileTypes[width * height])
 	
 {
-	tiles_ = new TileTypes[width * height];
+	for (int i = 0; i < width * height; i++)
+	{
+		tiles_[i] = TileTypes::kEmpty;
+	}
 }
 
 void Board::DrawCell(const Location & loc, Color c)
